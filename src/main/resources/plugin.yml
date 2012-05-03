@@ -1,0 +1,8 @@
+name: OceManaBar
+main: me.oceanor.OceManaBar.OceManaBar
+version: 1.0
+depend: [Spout,MagicSpells]
+permissions:
+    ocemanabar.show:
+        description: show/hide mana bar to players
+        default: true 
