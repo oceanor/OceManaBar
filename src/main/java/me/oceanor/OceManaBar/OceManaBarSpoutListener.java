@@ -48,6 +48,7 @@ public class OceManaBarSpoutListener implements Listener
     			gradientBackground.setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest);
 
 				player.getMainScreen().attachWidget(plugin, gradientBackground);
+				OceManaBar.backgrounds.put(player,gradientBackground);
 			}
 			
 			if(OceManaBar.useAscii)

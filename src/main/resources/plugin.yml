@@ -1,7 +1,14 @@
 name: OceManaBar
 main: me.oceanor.OceManaBar.OceManaBar
-version: 2.0
+version: 2.1
 depend: [Spout,MagicSpells]
+commands:
+    manabar:
+        description: Comando per OceManaBar.
+        usage: /<command> reload
+    ocemanabar:
+        description: comando alternativo per OceManaBar.
+        usage: /<command> reload
 permissions:
     ocemanabar.show:
         description: show/hide mana bar to players

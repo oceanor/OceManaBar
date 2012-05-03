@@ -19,6 +19,7 @@ public class OceManaBar extends JavaPlugin
 	public static OceManaBar plugin;
     public OceListener ManaChangeListener = new OceListener(this);
     public OceManaBarSpoutListener SpoutListener = new OceManaBarSpoutListener(this);
+    public OceCommandHandler CommandExecutor;
     
     public final static Logger logger = Logger.getLogger("Minecraft");
     
@@ -42,6 +43,7 @@ public class OceManaBar extends JavaPlugin
 	
     public static Map<Player, GenericLabel> asciibars = new HashMap<Player, GenericLabel>();
     public static Map<Player, GenericGradient> gradientbars = new HashMap<Player, GenericGradient>();
+    public static Map<Player, GenericGradient> backgrounds = new HashMap<Player, GenericGradient>();
     public static Map<Player, GenericLabel> numericmanas = new HashMap<Player, GenericLabel>();
 
 	@Override
@@ -54,9 +56,13 @@ public class OceManaBar extends JavaPlugin
     public void onEnable() 
     {
     	plugin = this;
-
-		PluginManager pm = getServer().getPluginManager();
-		loadConfiguration();
+    	PluginManager pm = getServer().getPluginManager();
+		
+    	CommandExecutor = new OceCommandHandler(this);
+    	getCommand("ocemanabar").setExecutor(CommandExecutor);
+    	getCommand("manabar").setExecutor(CommandExecutor);
+		
+    	loadConfiguration();
 		hasSpout = this.getServer().getPluginManager().isPluginEnabled("Spout");
 		hasMagicSpells = this.getServer().getPluginManager().isPluginEnabled("MagicSpells");
 
