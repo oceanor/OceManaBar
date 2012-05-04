@@ -3,6 +3,7 @@ package me.oceanor.OceManaBar;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,6 +46,7 @@ public class OceCommandHandler implements CommandExecutor
 
                     int oldType = OceManaBar.manabarType;
                     boolean oldShow = OceManaBar.showNumeric;
+                    int oldSize = OceManaBar.size;
                     
                     OceManaBar.enabled = plugin.getConfig().getBoolean("enabled");
                     OceManaBar.manabarType = plugin.getConfig().getInt("manabarType");
@@ -86,6 +88,19 @@ public class OceCommandHandler implements CommandExecutor
                         Entry<Player, GenericLabel> item = it1.next();
                         GenericLabel asciibar = item.getValue();
                         asciibar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
+
+                        // repaint ascii bar if we need to change size
+                        if(OceManaBar.enabled && OceManaBar.manabarType == 1 && (OceManaBar.size != oldSize))
+                           {
+                            String textbar = "";
+                            textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
+                            int i;
+                            for (i=0 ; i<OceManaBar.size; i++)
+                                textbar += OceManaBar.segmentChar;
+                            textbar += ChatColor.DARK_GRAY + "]";
+                            
+                            asciibar.setText(textbar);
+                        }
                         
                         // from ascii to texture, we need to delete ascii labels and initialize gradients / backgrounds
                         if(OceManaBar.enabled && oldType == 1 && OceManaBar.manabarType == 2)
@@ -126,6 +141,15 @@ public class OceCommandHandler implements CommandExecutor
                             
                             GenericLabel asciiBar = new GenericLabel();
                             asciiBar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
+                            
+                            String textbar = "";
+                            textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
+                            int i;
+                            for (i=0 ; i<OceManaBar.size; i++)
+                                textbar += OceManaBar.segmentChar;
+                            textbar += ChatColor.DARK_GRAY + "]";
+                            
+                            asciiBar.setText(textbar);
                             
                             p.getMainScreen().attachWidget(plugin, asciiBar);
                             OceManaBar.asciibars.put(p,asciiBar);

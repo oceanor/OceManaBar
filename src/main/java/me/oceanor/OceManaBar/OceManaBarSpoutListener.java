@@ -1,4 +1,5 @@
 package me.oceanor.OceManaBar;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -54,6 +55,15 @@ public class OceManaBarSpoutListener implements Listener
             if(OceManaBar.useAscii)
             {
                 asciiBar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
+
+                String textbar = "";
+                textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
+                int i;
+                for (i=0 ; i<OceManaBar.size; i++)
+                    textbar += OceManaBar.segmentChar;
+                textbar += ChatColor.DARK_GRAY + "]";
+                asciiBar.setText(textbar);
+                
                 player.getMainScreen().attachWidget(plugin, asciiBar);
                 OceManaBar.asciibars.put(player,asciiBar);
             }
