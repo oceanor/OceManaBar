@@ -11,6 +11,7 @@ import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.RenderPriority;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class OceCommandHandler implements CommandExecutor 
 {
@@ -42,6 +43,22 @@ public class OceCommandHandler implements CommandExecutor
                 {
                     plugin.reloadConfig();
 
+                    int oldType = OceManaBar.manabarType;
+                    boolean oldShow = OceManaBar.showNumeric;
+                    
+                    OceManaBar.enabled = plugin.getConfig().getBoolean("enabled");
+                    OceManaBar.manabarType = plugin.getConfig().getInt("manabarType");
+                    if(OceManaBar.manabarType == 1)
+                    {
+                        OceManaBar.useAscii = true;
+                        OceManaBar.useTexture = false;
+                    }
+                    else
+                    {
+                        OceManaBar.useAscii = false;
+                        OceManaBar.useTexture = true;    
+                    }
+                    
                     OceManaBar.maxMana = plugin.getConfig().getInt("maxMana");
                     OceManaBar.showNumeric = plugin.getConfig().getBoolean("showNumeric");
                     OceManaBar.posX = plugin.getConfig().getInt("posX");
@@ -66,34 +83,88 @@ public class OceCommandHandler implements CommandExecutor
                     Iterator<Entry<Player, GenericLabel>> it1 = OceManaBar.asciibars.entrySet().iterator();
                     while (it1.hasNext())
                     {
-                        GenericLabel asciibar = it1.next().getValue();
+                        Entry<Player, GenericLabel> item = it1.next();
+                        GenericLabel asciibar = item.getValue();
                         asciibar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
+                        
+                        // from ascii to texture, we need to delete ascii labels and initialize gradients / backgrounds
+                        if(OceManaBar.enabled && oldType == 1 && OceManaBar.manabarType == 2)
+                        {
+                            SpoutPlayer p = (SpoutPlayer) item.getKey();
+                            p.getMainScreen().removeWidget(asciibar);
+                            OceManaBar.asciibars.remove(item);
+                            
+                            GenericGradient gradientBar = new GenericGradient();
+                            GenericGradient gradientBackground = new GenericGradient();
+                            gradientBar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
+                            gradientBar.setBottomColor(lightblue).setTopColor(darkblue).setPriority(RenderPriority.Lowest);
+                            gradientBackground.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
+                            gradientBackground.setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest);
+
+                            p.getMainScreen().attachWidget(plugin, gradientBar);
+                            p.getMainScreen().attachWidget(plugin, gradientBackground);
+                            OceManaBar.gradientbars.put(p, gradientBar);
+                            OceManaBar.backgrounds.put(p,gradientBackground);
+                        }
                     }
 
                     // gradients
                     Iterator<Entry<Player, GenericGradient>> it2 = OceManaBar.gradientbars.entrySet().iterator();
                     while (it2.hasNext())
                     {
-                        GenericGradient bar = it2.next().getValue();
+                        Entry<Player, GenericGradient> item = it2.next();
+                        GenericGradient bar = item.getValue();
                         bar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
                         bar.setBottomColor(lightblue).setTopColor(darkblue).setPriority(RenderPriority.Lowest);
+                        
+                        // from textures to ascii, we need to delete gradients and initialize ascii labels
+                        if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
+                        {
+                            SpoutPlayer p = (SpoutPlayer) item.getKey();
+                            p.getMainScreen().removeWidget(bar);
+                            OceManaBar.gradientbars.remove(item);
+                            
+                            GenericLabel asciiBar = new GenericLabel();
+                            asciiBar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
+                            
+                            p.getMainScreen().attachWidget(plugin, asciiBar);
+                            OceManaBar.asciibars.put(p,asciiBar);
+                        }
                     }
 
                     // backgrounds
                     Iterator<Entry<Player, GenericGradient>> it3 = OceManaBar.backgrounds.entrySet().iterator();
                     while (it3.hasNext())
                     {
-                        GenericGradient bg = it3.next().getValue();
+                        Entry<Player, GenericGradient> item = it3.next();
+                        GenericGradient bg = item.getValue();
                         bg.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
                         bg.setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest);
+                        
+                        // from textures to ascii, we just need to delete backgrounds, ascii labels are already initialized in gradients part 
+                        if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
+                        {
+                            SpoutPlayer p = (SpoutPlayer) item.getKey();
+                            p.getMainScreen().removeWidget(bg);
+                            OceManaBar.backgrounds.remove(item);
+                        }
                     }
 
                     // numeric manas
                     Iterator<Entry<Player, GenericLabel>> it4 = OceManaBar.numericmanas.entrySet().iterator();
                     while (it4.hasNext())
                     {
-                        GenericLabel numericmana = it4.next().getValue();
+                        Entry<Player, GenericLabel> item = it4.next();
+                        GenericLabel numericmana = item.getValue();
                         numericmana.setAuto(false).setX(OceManaBar.posX + OceManaBar.width).setY(OceManaBar.posY).setWidth(35).setHeight(OceManaBar.height);
+                        
+                        if(OceManaBar.enabled && oldShow && !OceManaBar.showNumeric)
+                        {
+                            // we had this label, now we need to remove
+                            SpoutPlayer p = (SpoutPlayer) item.getKey();
+                            p.getMainScreen().removeWidget(numericmana);
+                            OceManaBar.numericmanas.remove(item);
+                        }
                     }
 
                     sender.sendMessage("OceManaBar Configuration Reloaded.");
