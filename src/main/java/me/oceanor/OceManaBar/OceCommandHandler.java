@@ -33,7 +33,7 @@ public class OceCommandHandler implements CommandExecutor
                 boolean doReload = true;
                 if (sender instanceof Player) 
                 {
-                    if(!(sender.hasPermission("ocemanabar.reload") || sender.hasPermission("ocemanabar.admin")))
+                    if(!(sender.isOp() || sender.hasPermission("ocemanabar.reload") || sender.hasPermission("ocemanabar.admin")))
                     {
                         sender.sendMessage("You do not have permission to reload.");
                         doReload = false;
