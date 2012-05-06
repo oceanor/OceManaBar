@@ -1,0 +1,24 @@
+# Default OceManaBar Config file
+# 
+# enabled: [true|false] - easy enable or disable this plugin without remove it.
+# manabarType: [1|2]
+#     1: ascii.  
+#     2: textures.
+# maxMana: [number] - Copy here the value of max mana of your MagicSpells config file (default 100).
+# showNumeric: [true|false] - choose if add a number after the mana bar with [CurrentMana]/[TotalMana].
+# posX: [number] - Set X position of mana bar.
+# posY: [number] - Set Y position of mana bar.
+# height: [number] - Set height of mana bar. WARNING: if you are using textures, do not use a number less than 8
+# width: [number] - Set widht of mana bar.  WARNING: if you are using textures, do not use a number less than 4
+# segmentChar: [number] - For ascii mana bar, set wich characters it have to use.
+# size: [number] - For ascii mana bar, set how many characters it have to print.
+enabled: true
+manabarType: 2
+maxMana: 100
+showNumeric: true
+posX: 10
+posY: 10
+height: 9
+width: 80
+segmentChar: "|"
+size: 50
