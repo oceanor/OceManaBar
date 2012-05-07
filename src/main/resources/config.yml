@@ -9,7 +9,11 @@
 # posX: [number] - Set X position of mana bar.
 # posY: [number] - Set Y position of mana bar.
 # height: [number] - Set height of mana bar. WARNING: if you are using textures, do not use a number less than 8
-# width: [number] - Set widht of mana bar.  WARNING: if you are using textures, do not use a number less than 4
+# width: [number] - Set width of mana bar.  WARNING: if you are using textures, do not use a number less than 4
+# textureColor1: [hex number] - Set the first color of the gradient that compose the mana bar
+# textureColor2: [hex number] - Set the second color of the gradient that compose the mana bar
+# backgroundColor1: [hex number] - Set the color of the top-background of the mana bar
+# backgroundColor2: [hex number] - Set the color of the bottom-background of the mana bar
 # segmentChar: [number] - For ascii mana bar, set wich characters it have to use.
 # size: [number] - For ascii mana bar, set how many characters it have to print.
 enabled: true
@@ -20,5 +24,9 @@ posX: 10
 posY: 10
 height: 9
 width: 80
+textureColor1: 00BFFF
+textureColor2: 104E8B
+backgroundColor1: 000000
+backgroundColor2: 000000
 segmentChar: "|"
 size: 50

@@ -149,8 +149,8 @@ public class OceManaBar extends JavaPlugin
 
     public static Color hexToRgb(String hexcolor)
     {
-        return new Color(Integer.valueOf(hexcolor.substring( 1, 3 ), 16 ),
-                         Integer.valueOf(hexcolor.substring( 3, 5 ), 16 ),
-                         Integer.valueOf(hexcolor.substring( 5, 7 ), 16 ));
+        return new Color(Integer.valueOf(hexcolor.substring( 0, 2 ), 16 ),
+                         Integer.valueOf(hexcolor.substring( 2, 4 ), 16 ),
+                         Integer.valueOf(hexcolor.substring( 4, 6 ), 16 ));
     }
 }
