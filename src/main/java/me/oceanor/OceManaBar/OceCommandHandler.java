@@ -8,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -67,6 +66,10 @@ public class OceCommandHandler implements CommandExecutor
                     OceManaBar.posY = plugin.getConfig().getInt("posY");
                     OceManaBar.height = plugin.getConfig().getInt("height");
                     OceManaBar.width = plugin.getConfig().getInt("width");
+                    OceManaBar.gradient1 = OceManaBar.hexToRgb(plugin.getConfig().getString("textureColor1"));
+                    OceManaBar.gradient2 = OceManaBar.hexToRgb(plugin.getConfig().getString("textureColor2"));
+                    OceManaBar.bgcolor1 = OceManaBar.hexToRgb(plugin.getConfig().getString("backgroundColor1"));
+                    OceManaBar.bgcolor2 = OceManaBar.hexToRgb(plugin.getConfig().getString("backgroundColor2"));
                     OceManaBar.segmentChar = plugin.getConfig().getString("segmentChar");
                     OceManaBar.size = plugin.getConfig().getInt("size");
 
@@ -74,10 +77,6 @@ public class OceCommandHandler implements CommandExecutor
                         OceManaBar.height = 8;
                     if(OceManaBar.manabarType == 2 && OceManaBar.width < 4)
                         OceManaBar.width = 4;
-
-                    Color lightblue = new Color(0,191,255);
-                    Color darkblue = new Color(16,78,139);
-                    Color black = new Color(0,0,0);
 
 
                     // now let's reload open widgets!
@@ -112,9 +111,9 @@ public class OceCommandHandler implements CommandExecutor
                             GenericGradient gradientBar = new GenericGradient();
                             GenericGradient gradientBackground = new GenericGradient();
                             gradientBar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
-                            gradientBar.setBottomColor(lightblue).setTopColor(darkblue).setPriority(RenderPriority.Lowest);
+                            gradientBar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
                             gradientBackground.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
-                            gradientBackground.setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest);
+                            gradientBackground.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor2).setPriority(RenderPriority.Highest);
 
                             p.getMainScreen().attachWidget(plugin, gradientBar);
                             p.getMainScreen().attachWidget(plugin, gradientBackground);
@@ -130,7 +129,7 @@ public class OceCommandHandler implements CommandExecutor
                         Entry<Player, GenericGradient> item = it2.next();
                         GenericGradient bar = item.getValue();
                         bar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
-                        bar.setBottomColor(lightblue).setTopColor(darkblue).setPriority(RenderPriority.Lowest);
+                        bar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
                         
                         // from textures to ascii, we need to delete gradients and initialize ascii labels
                         if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
@@ -163,7 +162,7 @@ public class OceCommandHandler implements CommandExecutor
                         Entry<Player, GenericGradient> item = it3.next();
                         GenericGradient bg = item.getValue();
                         bg.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
-                        bg.setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest);
+                        bg.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor1).setPriority(RenderPriority.Highest);
                         
                         // from textures to ascii, we just need to delete backgrounds, ascii labels are already initialized in gradients part 
                         if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)

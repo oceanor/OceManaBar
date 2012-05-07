@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
 
@@ -35,6 +36,10 @@ public class OceManaBar extends JavaPlugin
     public static int size;
     public static int maxMana;
     public static String segmentChar;
+    public static Color gradient1;
+    public static Color gradient2;
+    public static Color bgcolor1;
+    public static Color bgcolor2;
 
     public static Boolean hasSpout, hasMagicSpells;
     
@@ -127,6 +132,10 @@ public class OceManaBar extends JavaPlugin
         posY = getConfig().getInt("posY");
         height = getConfig().getInt("height");
         width = getConfig().getInt("width");
+        gradient1 = hexToRgb(getConfig().getString("textureColor1"));
+        gradient2 = hexToRgb(getConfig().getString("textureColor2"));
+        bgcolor1 = hexToRgb(getConfig().getString("backgroundColor1"));
+        bgcolor2 = hexToRgb(getConfig().getString("backgroundColor2"));
         segmentChar = getConfig().getString("segmentChar");
         size = getConfig().getInt("size");
 
@@ -136,5 +145,12 @@ public class OceManaBar extends JavaPlugin
             width = 4;
 
         saveConfig();
+    }
+
+    public static Color hexToRgb(String hexcolor)
+    {
+        return new Color(Integer.valueOf(hexcolor.substring( 1, 3 ), 16 ),
+                         Integer.valueOf(hexcolor.substring( 3, 5 ), 16 ),
+                         Integer.valueOf(hexcolor.substring( 5, 7 ), 16 ));
     }
 }

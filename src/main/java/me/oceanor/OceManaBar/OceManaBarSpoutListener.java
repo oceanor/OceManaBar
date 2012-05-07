@@ -4,7 +4,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -30,28 +29,24 @@ public class OceManaBarSpoutListener implements Listener
             GenericLabel asciiBar = new GenericLabel();
             GenericGradient gradientBar = new GenericGradient();
             GenericGradient gradientBackground = new GenericGradient();
-        
+
             if(OceManaBar.useTexture)
             {
-                Color lightblue = new Color(0,191,255);
-                Color darkblue = new Color(16,78,139);
-                Color black = new Color(0,0,0);
-
                 // gradient bar
                 gradientBar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
-                gradientBar.setBottomColor(lightblue).setTopColor(darkblue).setPriority(RenderPriority.Lowest);
+                gradientBar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
 
                 player.getMainScreen().attachWidget(plugin, gradientBar);
                 OceManaBar.gradientbars.put(player,gradientBar);
                 
                 // black background / frame
                 gradientBackground.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
-                gradientBackground.setBottomColor(black).setTopColor(black).setPriority(RenderPriority.Highest);
+                gradientBackground.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor2).setPriority(RenderPriority.Highest);
 
                 player.getMainScreen().attachWidget(plugin, gradientBackground);
                 OceManaBar.backgrounds.put(player,gradientBackground);
             }
-            
+
             if(OceManaBar.useAscii)
             {
                 asciiBar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
