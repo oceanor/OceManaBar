@@ -162,7 +162,7 @@ public class OceCommandHandler implements CommandExecutor
                         Entry<Player, GenericGradient> item = it3.next();
                         GenericGradient bg = item.getValue();
                         bg.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
-                        bg.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor1).setPriority(RenderPriority.Highest);
+                        bg.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor2).setPriority(RenderPriority.Highest);
                         
                         // from textures to ascii, we just need to delete backgrounds, ascii labels are already initialized in gradients part 
                         if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)

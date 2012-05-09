@@ -132,10 +132,10 @@ public class OceManaBar extends JavaPlugin
         posY = getConfig().getInt("posY");
         height = getConfig().getInt("height");
         width = getConfig().getInt("width");
-        gradient1 = hexToRgb(getConfig().getString("textureColor1"));
-        gradient2 = hexToRgb(getConfig().getString("textureColor2"));
-        bgcolor1 = hexToRgb(getConfig().getString("backgroundColor1"));
-        bgcolor2 = hexToRgb(getConfig().getString("backgroundColor2"));
+        gradient1 = hexToRgb(new String(getConfig().getString("textureColor1")));
+        gradient2 = hexToRgb(new String(getConfig().getString("textureColor2")));
+        bgcolor1 = hexToRgb(new String(getConfig().getString("backgroundColor1")));
+        bgcolor2 = hexToRgb(new String(getConfig().getString("backgroundColor2")));
         segmentChar = getConfig().getString("segmentChar");
         size = getConfig().getInt("size");
 

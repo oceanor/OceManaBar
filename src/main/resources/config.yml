@@ -24,9 +24,9 @@ posX: 10
 posY: 10
 height: 9
 width: 80
-textureColor1: 00BFFF
-textureColor2: 104E8B
-backgroundColor1: 000000
-backgroundColor2: 000000
+textureColor1: '00BFFF'
+textureColor2: '104E8B'
+backgroundColor1: '000000'
+backgroundColor2: '000000'
 segmentChar: "|"
 size: 50
