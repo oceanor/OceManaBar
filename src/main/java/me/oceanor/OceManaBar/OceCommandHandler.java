@@ -3,6 +3,7 @@ package me.oceanor.OceManaBar;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,9 +43,6 @@ public class OceCommandHandler implements CommandExecutor
                 {
                     plugin.reloadConfig();
 
-                    int oldType = OceManaBar.manabarType;
-                    boolean oldShow = OceManaBar.showNumeric;
-                    
                     OceManaBar.enabled = plugin.getConfig().getBoolean("enabled");
                     OceManaBar.manabarType = plugin.getConfig().getInt("manabarType");
                     if(OceManaBar.manabarType == 1)
@@ -75,85 +73,59 @@ public class OceCommandHandler implements CommandExecutor
                         OceManaBar.height = 8;
                     if(OceManaBar.manabarType == 2 && OceManaBar.width < 4)
                         OceManaBar.width = 4;
-
-
-                    // now let's reload open widgets!
-                    // ascii bars
+                    
                     Iterator<Entry<Player, GenericLabel>> it1 = OceManaBar.asciibars.entrySet().iterator();
                     while (it1.hasNext())
                     {
                         Entry<Player, GenericLabel> item = it1.next();
                         GenericLabel asciibar = item.getValue();
                         SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        
-                        util.setAsciiBar(asciibar, p);
-                        
-                        // from ascii to texture, we need to delete ascii labels and initialize gradients / backgrounds
-                        if(OceManaBar.enabled && oldType == 1 && OceManaBar.manabarType == 2)
-                        {
-                            p.getMainScreen().removeWidget(asciibar);
-                            OceManaBar.asciibars.remove(item);
-                            
-                            GenericGradient gradientBar = new GenericGradient();
-                            GenericGradient gradientBackground = new GenericGradient();
-
-                            util.SetGradientBar(gradientBar, p);
-                            util.SetBackgroundBar(gradientBackground, p);
-                        }
+                        p.getMainScreen().removeWidget(asciibar);
                     }
-
-                    // gradients
                     Iterator<Entry<Player, GenericGradient>> it2 = OceManaBar.gradientbars.entrySet().iterator();
                     while (it2.hasNext())
                     {
                         Entry<Player, GenericGradient> item = it2.next();
                         GenericGradient bar = item.getValue();
                         SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        util.SetGradientBar(bar, p);
-                        
-                        // from textures to ASCII, we need to delete gradients and initialize ASCII labels
-                        if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
-                        {
-                            p.getMainScreen().removeWidget(bar);
-                            OceManaBar.gradientbars.remove(item);
-                            
-                            GenericLabel asciiBar = new GenericLabel();
-                            util.setAsciiBar(asciiBar, p);
-                        }
+                        p.getMainScreen().removeWidget(bar);
                     }
-
-                    // backgrounds
                     Iterator<Entry<Player, GenericGradient>> it3 = OceManaBar.backgrounds.entrySet().iterator();
                     while (it3.hasNext())
                     {
                         Entry<Player, GenericGradient> item = it3.next();
-                        GenericGradient bg = item.getValue();
+                        GenericGradient bar = item.getValue();
                         SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        util.SetBackgroundBar(bg, p);
-                        
-                        // from textures to ASCII, we just need to delete backgrounds, ASCII labels are already initialized in gradients part 
-                        if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
-                        {
-                            p.getMainScreen().removeWidget(bg);
-                            OceManaBar.backgrounds.remove(item);
-                        }
+                        p.getMainScreen().removeWidget(bar);
                     }
-
-                    // numeric mana
-                    Iterator<Entry<Player, GenericLabel>> it4 = OceManaBar.numericmanas.entrySet().iterator();
-                    while (it4.hasNext())
+                    OceManaBar.asciibars.clear();
+                    OceManaBar.gradientbars.clear();
+                    OceManaBar.backgrounds.clear();
+                    
+                    for(int i = 0; i < OceManaBar.SpoutPlayers.size(); i++)
                     {
-                        Entry<Player, GenericLabel> item = it4.next();
-                        GenericLabel numericmana = item.getValue();
-                        SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        util.setNumericMana(numericmana, p);
+                        String pname = OceManaBar.SpoutPlayers.get(i);
+                        SpoutPlayer plr = (SpoutPlayer) Bukkit.getPlayer(pname);
                         
-                        if(OceManaBar.enabled && oldShow && !OceManaBar.showNumeric)
-                        {
-                            // we had this label, now we need to remove
-                            p.getMainScreen().removeWidget(numericmana);
-                            OceManaBar.numericmanas.remove(item);
+                        if(OceManaBar.enabled && plr.hasPermission("ocemanabar.show"))
+                        {   
+                            if(OceManaBar.useTexture)
+                            {
+                                util.SetGradientBar(new GenericGradient(), plr);
+                                util.SetBackgroundBar(new GenericGradient(), plr);
+                            }
+
+                            if(OceManaBar.useAscii)
+                            {
+                                util.setAsciiBar(new GenericLabel(), plr);
+                            }
+                            
+                            if(OceManaBar.showNumeric)
+                            {
+                                util.setNumericMana(new GenericLabel(), plr);
+                            }
                         }
+                        
                     }
 
                     sender.sendMessage("OceManaBar Configuration Reloaded.");

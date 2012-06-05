@@ -3,6 +3,7 @@ package me.oceanor.OceManaBar;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -48,6 +49,7 @@ public class OceManaBar extends JavaPlugin
     public static FileConfiguration PlayerConfig = null;
     public static File PlayerConfigurationFile = null;
 
+    public static ArrayList<String> SpoutPlayers = new ArrayList<String>();
     public static Map<String, BarOptions> pMapConfig = new HashMap<String, BarOptions>();
     public static Map<Player, GenericLabel> asciibars = new HashMap<Player, GenericLabel>();
     public static Map<Player, GenericGradient> gradientbars = new HashMap<Player, GenericGradient>();
