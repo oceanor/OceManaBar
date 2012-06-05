@@ -3,19 +3,18 @@ package me.oceanor.OceManaBar;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class OceCommandHandler implements CommandExecutor 
 {
     public OceManaBar plugin;
+    Utils util = new Utils(plugin);
     
     public OceCommandHandler(OceManaBar instance)
     {
@@ -45,7 +44,6 @@ public class OceCommandHandler implements CommandExecutor
 
                     int oldType = OceManaBar.manabarType;
                     boolean oldShow = OceManaBar.showNumeric;
-                    int oldSize = OceManaBar.size;
                     
                     OceManaBar.enabled = plugin.getConfig().getBoolean("enabled");
                     OceManaBar.manabarType = plugin.getConfig().getInt("manabarType");
@@ -86,39 +84,21 @@ public class OceCommandHandler implements CommandExecutor
                     {
                         Entry<Player, GenericLabel> item = it1.next();
                         GenericLabel asciibar = item.getValue();
-                        asciibar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
-
-                        // repaint ascii bar if we need to change size
-                        if(OceManaBar.enabled && OceManaBar.manabarType == 1 && (OceManaBar.size != oldSize))
-                           {
-                            String textbar = "";
-                            textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
-                            int i;
-                            for (i=0 ; i<OceManaBar.size; i++)
-                                textbar += OceManaBar.segmentChar;
-                            textbar += ChatColor.DARK_GRAY + "]";
-                            
-                            asciibar.setText(textbar);
-                        }
+                        SpoutPlayer p = (SpoutPlayer) item.getKey();
+                        
+                        util.setAsciiBar(asciibar, p);
                         
                         // from ascii to texture, we need to delete ascii labels and initialize gradients / backgrounds
                         if(OceManaBar.enabled && oldType == 1 && OceManaBar.manabarType == 2)
                         {
-                            SpoutPlayer p = (SpoutPlayer) item.getKey();
                             p.getMainScreen().removeWidget(asciibar);
                             OceManaBar.asciibars.remove(item);
                             
                             GenericGradient gradientBar = new GenericGradient();
                             GenericGradient gradientBackground = new GenericGradient();
-                            gradientBar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
-                            gradientBar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
-                            gradientBackground.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
-                            gradientBackground.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor2).setPriority(RenderPriority.Highest);
 
-                            p.getMainScreen().attachWidget(plugin, gradientBar);
-                            p.getMainScreen().attachWidget(plugin, gradientBackground);
-                            OceManaBar.gradientbars.put(p, gradientBar);
-                            OceManaBar.backgrounds.put(p,gradientBackground);
+                            util.SetGradientBar(gradientBar, p);
+                            util.SetBackgroundBar(gradientBackground, p);
                         }
                     }
 
@@ -128,30 +108,17 @@ public class OceCommandHandler implements CommandExecutor
                     {
                         Entry<Player, GenericGradient> item = it2.next();
                         GenericGradient bar = item.getValue();
-                        bar.setX(OceManaBar.posX +1).setY(OceManaBar.posY +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
-                        bar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
+                        SpoutPlayer p = (SpoutPlayer) item.getKey();
+                        util.SetGradientBar(bar, p);
                         
-                        // from textures to ascii, we need to delete gradients and initialize ascii labels
+                        // from textures to ASCII, we need to delete gradients and initialize ASCII labels
                         if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
                         {
-                            SpoutPlayer p = (SpoutPlayer) item.getKey();
                             p.getMainScreen().removeWidget(bar);
                             OceManaBar.gradientbars.remove(item);
                             
                             GenericLabel asciiBar = new GenericLabel();
-                            asciiBar.setAuto(false).setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
-                            
-                            String textbar = "";
-                            textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
-                            int i;
-                            for (i=0 ; i<OceManaBar.size; i++)
-                                textbar += OceManaBar.segmentChar;
-                            textbar += ChatColor.DARK_GRAY + "]";
-                            
-                            asciiBar.setText(textbar);
-                            
-                            p.getMainScreen().attachWidget(plugin, asciiBar);
-                            OceManaBar.asciibars.put(p,asciiBar);
+                            util.setAsciiBar(asciiBar, p);
                         }
                     }
 
@@ -161,36 +128,86 @@ public class OceCommandHandler implements CommandExecutor
                     {
                         Entry<Player, GenericGradient> item = it3.next();
                         GenericGradient bg = item.getValue();
-                        bg.setX(OceManaBar.posX).setY(OceManaBar.posY).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
-                        bg.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor2).setPriority(RenderPriority.Highest);
+                        SpoutPlayer p = (SpoutPlayer) item.getKey();
+                        util.SetBackgroundBar(bg, p);
                         
-                        // from textures to ascii, we just need to delete backgrounds, ascii labels are already initialized in gradients part 
+                        // from textures to ASCII, we just need to delete backgrounds, ASCII labels are already initialized in gradients part 
                         if(OceManaBar.enabled && oldType == 2 && OceManaBar.manabarType == 1)
                         {
-                            SpoutPlayer p = (SpoutPlayer) item.getKey();
                             p.getMainScreen().removeWidget(bg);
                             OceManaBar.backgrounds.remove(item);
                         }
                     }
 
-                    // numeric manas
+                    // numeric mana
                     Iterator<Entry<Player, GenericLabel>> it4 = OceManaBar.numericmanas.entrySet().iterator();
                     while (it4.hasNext())
                     {
                         Entry<Player, GenericLabel> item = it4.next();
                         GenericLabel numericmana = item.getValue();
-                        numericmana.setAuto(false).setX(OceManaBar.posX + OceManaBar.width).setY(OceManaBar.posY).setWidth(35).setHeight(OceManaBar.height);
+                        SpoutPlayer p = (SpoutPlayer) item.getKey();
+                        util.setNumericMana(numericmana, p);
                         
                         if(OceManaBar.enabled && oldShow && !OceManaBar.showNumeric)
                         {
                             // we had this label, now we need to remove
-                            SpoutPlayer p = (SpoutPlayer) item.getKey();
                             p.getMainScreen().removeWidget(numericmana);
                             OceManaBar.numericmanas.remove(item);
                         }
                     }
 
                     sender.sendMessage("OceManaBar Configuration Reloaded.");
+                    return true;
+                }
+            }
+            else if (args.length > 0 && args[0].toLowerCase().equals("position"))
+            {
+                boolean proceed = false;
+                if (sender instanceof Player) 
+                {
+                    if(!(sender.isOp() || sender.hasPermission("ocemanabar.user") || sender.hasPermission("ocemanabar.admin")))
+                        sender.sendMessage("You do not have permission to do this.");
+                    else
+                        proceed = true;
+                }
+                
+                if(proceed)
+                {
+                    BarOptions tmpOpt = OceManaBar.pMapConfig.get(sender.getName());
+                    int tmpX, tmpY;
+                    
+                    if(args[1].toLowerCase().equalsIgnoreCase("reset"))
+                    {
+                        tmpX = OceManaBar.posX;
+                        tmpY = OceManaBar.posY;
+                    }
+                    else
+                    {
+                        tmpX = Integer.parseInt(args[1].toLowerCase());
+                        tmpY = Integer.parseInt(args[2].toLowerCase());
+                    }
+                    
+                    tmpOpt.setXpos(tmpX);
+                    tmpOpt.setYpos(tmpY);
+
+                    if(OceManaBar.useTexture)
+                    {
+                        GenericGradient tmpTextureBar = OceManaBar.gradientbars.get(sender);
+                        util.SetGradientBar(tmpTextureBar, (SpoutPlayer)sender);
+                        
+                        GenericGradient tmpBg = OceManaBar.backgrounds.get(sender);
+                        util.SetBackgroundBar(tmpBg, (SpoutPlayer)sender);
+                    }
+                    if(OceManaBar.useAscii)
+                    {
+                        GenericLabel tmpAsciiBar = OceManaBar.asciibars.get(sender);
+                        util.setAsciiBar(tmpAsciiBar, (SpoutPlayer)sender);
+                    }
+                    if(OceManaBar.showNumeric)
+                    {
+                        GenericLabel tmpnumericmana = OceManaBar.numericmanas.get(sender);
+                        util.setNumericMana(tmpnumericmana, (SpoutPlayer)sender);
+                    }
                     return true;
                 }
             }

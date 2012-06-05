@@ -1,6 +1,8 @@
 package me.oceanor.OceManaBar;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -45,15 +47,23 @@ public class OceManaBar extends JavaPlugin
     
     public static FileConfiguration PlayerConfig = null;
     public static File PlayerConfigurationFile = null;
-    
+
+    public static Map<String, BarOptions> pMapConfig = new HashMap<String, BarOptions>();
     public static Map<Player, GenericLabel> asciibars = new HashMap<Player, GenericLabel>();
     public static Map<Player, GenericGradient> gradientbars = new HashMap<Player, GenericGradient>();
     public static Map<Player, GenericGradient> backgrounds = new HashMap<Player, GenericGradient>();
     public static Map<Player, GenericLabel> numericmanas = new HashMap<Player, GenericLabel>();
 
-    @Override
+    public Utils utilities = new Utils(this);
+    
     public void onDisable() 
     {
+        try 
+        {
+            utilities.savePlayerConfigs(pMapConfig, "db.dat");
+        } catch (FileNotFoundException e) {e.printStackTrace();
+        } catch (IOException e) {e.printStackTrace();}
+        
         this.getServer().getScheduler().cancelTasks(this);
         logger.info("[Ocemanabar] disabled");
     }
@@ -90,7 +100,6 @@ public class OceManaBar extends JavaPlugin
         logger.info("[Ocemanabar] enabled");
     }
     
-
     public void loadConfiguration() 
     {
         getConfig().options().copyDefaults(true);
@@ -149,8 +158,7 @@ public class OceManaBar extends JavaPlugin
 
     public static Color hexToRgb(String hexcolor)
     {
-        return new Color(Integer.valueOf(hexcolor.substring( 0, 2 ), 16 ),
-                         Integer.valueOf(hexcolor.substring( 2, 4 ), 16 ),
-                         Integer.valueOf(hexcolor.substring( 4, 6 ), 16 ));
+        int val = Integer.parseInt(hexcolor, 16);
+        return new Color(val);
     }
 }
