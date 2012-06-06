@@ -43,7 +43,7 @@ public class OceManaBar extends JavaPlugin
     public static Color gradient2;
     public static Color bgcolor1;
     public static Color bgcolor2;
-
+    
     public static Boolean hasSpout, hasMagicSpells;
     
     public static FileConfiguration PlayerConfig = null;

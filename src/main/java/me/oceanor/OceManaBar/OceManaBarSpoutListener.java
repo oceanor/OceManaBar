@@ -27,7 +27,7 @@ public class OceManaBarSpoutListener implements Listener
 
         if(!OceManaBar.pMapConfig.containsKey(player.getName()))
         {
-            BarOptions tmpOpt = new BarOptions(OceManaBar.posX, OceManaBar.posY);
+            BarOptions tmpOpt = new BarOptions(OceManaBar.posX, OceManaBar.posY, OceManaBar.width, OceManaBar.height);
             OceManaBar.pMapConfig.put(player.getName(), tmpOpt);
         }
 

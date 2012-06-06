@@ -3,12 +3,14 @@ package me.oceanor.OceManaBar;
 public class BarOptions 
 {
     private boolean enabled = true;
-    private int x,y;
+    private int x,y, height, width;
     
-    public BarOptions(int posX, int posY)
+    public BarOptions(int posX, int posY, int height, int width)
     {
         this.x = posX;
         this.y = posY;
+        this.height = height;
+        this.width = width;
     }
     
     public void setEnabled(boolean value)
@@ -39,5 +41,25 @@ public class BarOptions
     public int getYpos()
     {
         return y;
+    }
+
+    public void setWidth(int value)
+    {
+        width = value;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+    
+    public void setHeight(int value)
+    {
+        height = value;
+    }
+
+    public int getHeight()
+    {
+        return height;
     }
 }

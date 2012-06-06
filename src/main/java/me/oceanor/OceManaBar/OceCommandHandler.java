@@ -183,6 +183,57 @@ public class OceCommandHandler implements CommandExecutor
                     return true;
                 }
             }
+            else if (args.length > 0 && args[0].toLowerCase().equals("size"))
+            {
+                boolean proceed = false;
+                if (sender instanceof Player) 
+                {
+                    if(!(sender.isOp() || sender.hasPermission("ocemanabar.user") || sender.hasPermission("ocemanabar.admin")))
+                        sender.sendMessage("You do not have permission to do this.");
+                    else
+                        proceed = true;
+                }
+                
+                if(proceed)
+                {
+                    BarOptions tmpOpt = OceManaBar.pMapConfig.get(sender.getName());
+                    int tmpWidth, tmpHeight;
+                    
+                    if(args[1].toLowerCase().equalsIgnoreCase("reset"))
+                    {
+                        tmpWidth = OceManaBar.width;
+                        tmpHeight = OceManaBar.height;
+                    }
+                    else
+                    {
+                        tmpWidth = Integer.parseInt(args[1].toLowerCase());
+                        tmpHeight = Integer.parseInt(args[2].toLowerCase());
+                    }
+                    
+                    tmpOpt.setWidth(tmpWidth);
+                    tmpOpt.setHeight(tmpHeight);
+
+                    if(OceManaBar.useTexture)
+                    {
+                        GenericGradient tmpTextureBar = OceManaBar.gradientbars.get(sender);
+                        util.SetGradientBar(tmpTextureBar, (SpoutPlayer)sender);
+                        
+                        GenericGradient tmpBg = OceManaBar.backgrounds.get(sender);
+                        util.SetBackgroundBar(tmpBg, (SpoutPlayer)sender);
+                    }
+                    if(OceManaBar.useAscii)
+                    {
+                        GenericLabel tmpAsciiBar = OceManaBar.asciibars.get(sender);
+                        util.setAsciiBar(tmpAsciiBar, (SpoutPlayer)sender);
+                    }
+                    if(OceManaBar.showNumeric)
+                    {
+                        GenericLabel tmpnumericmana = OceManaBar.numericmanas.get(sender);
+                        util.setNumericMana(tmpnumericmana, (SpoutPlayer)sender);
+                    }
+                    return true;
+                }
+            }
         }
         return false;
     }

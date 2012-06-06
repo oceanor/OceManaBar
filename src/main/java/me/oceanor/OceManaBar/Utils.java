@@ -49,11 +49,9 @@ public class Utils
         BarOptions playerOptions = OceManaBar.pMapConfig.get(plr.getName());
         
         // gradient bar
-        gradientBar.setX(playerOptions.getXpos() +1).setY(playerOptions.getYpos() +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
+        gradientBar.setX(playerOptions.getXpos() +1).setY(playerOptions.getYpos() +2).setWidth(playerOptions.getWidth() -3).setHeight(playerOptions.getHeight() - 7);
         gradientBar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
 
-        plr.sendMessage("Colore 1: " + OceManaBar.c1 + " Colore 2: " + OceManaBar.c2);
-        
         plr.getMainScreen().attachWidget(plg, gradientBar);
         OceManaBar.gradientbars.put(plr,gradientBar);
     }
@@ -63,7 +61,7 @@ public class Utils
         BarOptions playerOptions = OceManaBar.pMapConfig.get(plr.getName());
 
         // black background / frame
-        bg.setX(playerOptions.getXpos()).setY(playerOptions.getYpos()).setWidth(OceManaBar.width).setHeight(OceManaBar.height -3);
+        bg.setX(playerOptions.getXpos()).setY(playerOptions.getYpos()).setWidth(playerOptions.getWidth()).setHeight(playerOptions.getHeight() -3);
         bg.setBottomColor(OceManaBar.bgcolor1).setTopColor(OceManaBar.bgcolor2).setPriority(RenderPriority.Highest);
 
         plr.getMainScreen().attachWidget(plg, bg);
@@ -74,7 +72,7 @@ public class Utils
     {
         BarOptions playerOptions = OceManaBar.pMapConfig.get(plr.getName());
 
-        textBar.setAuto(false).setX(playerOptions.getXpos()).setY(playerOptions.getYpos()).setWidth(OceManaBar.width).setHeight(OceManaBar.height);
+        textBar.setAuto(false).setX(playerOptions.getXpos()).setY(playerOptions.getYpos()).setWidth(playerOptions.getWidth()).setHeight(playerOptions.getHeight());
         
         String textbar = "";
         textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
@@ -92,7 +90,7 @@ public class Utils
     {
         BarOptions playerOptions = OceManaBar.pMapConfig.get(plr.getName());
         
-        numBar.setAuto(false).setX(playerOptions.getXpos() + OceManaBar.width).setY(playerOptions.getYpos()).setWidth(35).setHeight(OceManaBar.height);
+        numBar.setAuto(false).setX(playerOptions.getXpos() + playerOptions.getWidth()).setY(playerOptions.getYpos()).setWidth(35).setHeight(playerOptions.getHeight());
         numBar.setText("[" + OceManaBar.maxMana + "/" + OceManaBar.maxMana + "]");
         plr.getMainScreen().attachWidget(plg, numBar);
         OceManaBar.numericmanas.put(plr,numBar);
