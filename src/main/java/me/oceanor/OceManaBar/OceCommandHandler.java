@@ -62,10 +62,10 @@ public class OceCommandHandler implements CommandExecutor
                     OceManaBar.posY = plugin.getConfig().getInt("posY");
                     OceManaBar.height = plugin.getConfig().getInt("height");
                     OceManaBar.width = plugin.getConfig().getInt("width");
-                    OceManaBar.gradient1 = OceManaBar.hexToRgb(plugin.getConfig().getString("textureColor1"));
-                    OceManaBar.gradient2 = OceManaBar.hexToRgb(plugin.getConfig().getString("textureColor2"));
-                    OceManaBar.bgcolor1 = OceManaBar.hexToRgb(plugin.getConfig().getString("backgroundColor1"));
-                    OceManaBar.bgcolor2 = OceManaBar.hexToRgb(plugin.getConfig().getString("backgroundColor2"));
+                    OceManaBar.gradient1 = Utils.strToColor(plugin.getConfig().getString("textureColor1"));
+                    OceManaBar.gradient2 = Utils.strToColor(plugin.getConfig().getString("textureColor2"));
+                    OceManaBar.bgcolor1 = Utils.strToColor(plugin.getConfig().getString("backgroundColor1"));
+                    OceManaBar.bgcolor2 = Utils.strToColor(plugin.getConfig().getString("backgroundColor2"));
                     OceManaBar.segmentChar = plugin.getConfig().getString("segmentChar");
                     OceManaBar.size = plugin.getConfig().getInt("size");
 

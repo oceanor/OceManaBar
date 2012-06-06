@@ -118,6 +118,10 @@ public class OceManaBar extends JavaPlugin
         headertext += "posY: [number] - Set Y position of mana bar.\r\n";
         headertext += "height: [number] - Set height of mana bar. WARNING: if you are using textures, do not use a number less than 8\r\n";
         headertext += "width: [number] - Set widht of mana bar.  WARNING: if you are using textures, do not use a number less than 4\r\n";
+        headertext += "textureColor1: [color name] - Set the first color of the gradient that compose the mana bar\r\n";
+        headertext += "textureColor2: [color name] - Set the second color of the gradient that compose the mana bar \r\n";
+        headertext += "backgroundColor1: [color name] - Set the color of the top-background of the mana bar \r\n";
+        headertext += "backgroundColor2: [color name] - Set the color of the bottom-background of the mana bar \r\n";
         headertext += "segmentChar: [number] - For ascii mana bar, set wich characters it have to use.\r\n";
         headertext += "size: [number] - For ascii mana bar, set how many characters it have to print.\r\n";
         headertext += "\r\n";
@@ -143,10 +147,10 @@ public class OceManaBar extends JavaPlugin
         posY = getConfig().getInt("posY");
         height = getConfig().getInt("height");
         width = getConfig().getInt("width");
-        gradient1 = hexToRgb(new String(getConfig().getString("textureColor1")));
-        gradient2 = hexToRgb(new String(getConfig().getString("textureColor2")));
-        bgcolor1 = hexToRgb(new String(getConfig().getString("backgroundColor1")));
-        bgcolor2 = hexToRgb(new String(getConfig().getString("backgroundColor2")));
+        gradient1 = Utils.strToColor(getConfig().getString("textureColor1"));
+        gradient2 = Utils.strToColor(getConfig().getString("textureColor2"));
+        bgcolor1 = Utils.strToColor(getConfig().getString("backgroundColor1"));
+        bgcolor2 = Utils.strToColor(getConfig().getString("backgroundColor2"));
         segmentChar = getConfig().getString("segmentChar");
         size = getConfig().getInt("size");
 
@@ -156,11 +160,5 @@ public class OceManaBar extends JavaPlugin
             width = 4;
 
         saveConfig();
-    }
-
-    public static Color hexToRgb(String hexcolor)
-    {
-        int val = Integer.parseInt(hexcolor, 16);
-        return new Color(val);
     }
 }

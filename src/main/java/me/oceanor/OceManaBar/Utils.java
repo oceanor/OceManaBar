@@ -6,10 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.RenderPriority;
@@ -50,6 +52,8 @@ public class Utils
         gradientBar.setX(playerOptions.getXpos() +1).setY(playerOptions.getYpos() +2).setWidth(OceManaBar.width -3).setHeight(OceManaBar.height - 7);
         gradientBar.setBottomColor(OceManaBar.gradient1).setTopColor(OceManaBar.gradient2).setPriority(RenderPriority.Lowest);
 
+        plr.sendMessage("Colore 1: " + OceManaBar.c1 + " Colore 2: " + OceManaBar.c2);
+        
         plr.getMainScreen().attachWidget(plg, gradientBar);
         OceManaBar.gradientbars.put(plr,gradientBar);
     }
@@ -92,5 +96,21 @@ public class Utils
         numBar.setText("[" + OceManaBar.maxMana + "/" + OceManaBar.maxMana + "]");
         plr.getMainScreen().attachWidget(plg, numBar);
         OceManaBar.numericmanas.put(plr,numBar);
+    }
+
+    public static Color strToColor(String strcolor)
+    {
+        java.awt.Color jcolor = null;
+        try
+        {
+            Field field = Class.forName("java.awt.Color").getField(strcolor.toLowerCase());
+            jcolor = (java.awt.Color)field.get(null);
+        }
+        catch (Exception e)
+        {
+            jcolor = java.awt.Color.BLACK;
+        }
+
+        return new Color(jcolor.getRed(),jcolor.getGreen(),jcolor.getBlue(),jcolor.getAlpha());
     }
 }
