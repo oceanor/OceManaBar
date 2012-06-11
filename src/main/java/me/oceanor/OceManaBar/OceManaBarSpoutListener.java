@@ -27,7 +27,7 @@ public class OceManaBarSpoutListener implements Listener
 
         if(!OceManaBar.pMapConfig.containsKey(player.getName()))
         {
-            BarOptions tmpOpt = new BarOptions(OceManaBar.posX, OceManaBar.posY, OceManaBar.width, OceManaBar.height);
+            BarOptions tmpOpt = new BarOptions(OceManaBar.posX, OceManaBar.posY, OceManaBar.height, OceManaBar.width);
             OceManaBar.pMapConfig.put(player.getName(), tmpOpt);
         }
 
@@ -61,5 +61,6 @@ public class OceManaBarSpoutListener implements Listener
         OceManaBar.asciibars.remove(pname);
         OceManaBar.gradientbars.remove(pname);
         OceManaBar.backgrounds.remove(pname);
+        OceManaBar.numericmanas.remove(pname);
     }
 }

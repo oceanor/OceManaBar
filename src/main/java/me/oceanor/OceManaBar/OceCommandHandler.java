@@ -41,8 +41,7 @@ public class OceCommandHandler implements CommandExecutor
                 
                 if (doReload) 
                 {
-                    plugin.reloadConfig();
-
+                    //plugin.reloadConfig();
                     OceManaBar.enabled = plugin.getConfig().getBoolean("enabled");
                     OceManaBar.manabarType = plugin.getConfig().getInt("manabarType");
                     if(OceManaBar.manabarType == 1)
@@ -79,28 +78,33 @@ public class OceCommandHandler implements CommandExecutor
                     {
                         Entry<Player, GenericLabel> item = it1.next();
                         GenericLabel asciibar = item.getValue();
-                        SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        p.getMainScreen().removeWidget(asciibar);
+                        asciibar.getScreen().removeWidget(asciibar);
                     }
                     Iterator<Entry<Player, GenericGradient>> it2 = OceManaBar.gradientbars.entrySet().iterator();
                     while (it2.hasNext())
                     {
                         Entry<Player, GenericGradient> item = it2.next();
                         GenericGradient bar = item.getValue();
-                        SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        p.getMainScreen().removeWidget(bar);
+                        bar.getScreen().removeWidget(bar);
                     }
                     Iterator<Entry<Player, GenericGradient>> it3 = OceManaBar.backgrounds.entrySet().iterator();
                     while (it3.hasNext())
                     {
                         Entry<Player, GenericGradient> item = it3.next();
-                        GenericGradient bar = item.getValue();
-                        SpoutPlayer p = (SpoutPlayer) item.getKey();
-                        p.getMainScreen().removeWidget(bar);
+                        GenericGradient bg = item.getValue();
+                        bg.getScreen().removeWidget(bg);
+                    }
+                    Iterator<Entry<Player, GenericLabel>> it4 = OceManaBar.numericmanas.entrySet().iterator();
+                    while (it1.hasNext())
+                    {
+                        Entry<Player, GenericLabel> item = it4.next();
+                        GenericLabel nummana = item.getValue();
+                        nummana.getScreen().removeWidget(nummana);
                     }
                     OceManaBar.asciibars.clear();
                     OceManaBar.gradientbars.clear();
                     OceManaBar.backgrounds.clear();
+                    OceManaBar.numericmanas.clear();
                     
                     for(int i = 0; i < OceManaBar.SpoutPlayers.size(); i++)
                     {
@@ -125,14 +129,13 @@ public class OceCommandHandler implements CommandExecutor
                                 util.setNumericMana(new GenericLabel(), plr);
                             }
                         }
-                        
                     }
 
                     sender.sendMessage("OceManaBar Configuration Reloaded.");
                     return true;
                 }
             }
-            else if (args.length > 0 && args[0].toLowerCase().equals("position"))
+            else if (args.length > 0 && args[0].toLowerCase().equals("size") || args[0].toLowerCase().equals("position") || args[0].toLowerCase().equals("off") || args[0].toLowerCase().equals("on"))
             {
                 boolean proceed = false;
                 if (sender instanceof Player) 
@@ -146,73 +149,56 @@ public class OceCommandHandler implements CommandExecutor
                 if(proceed)
                 {
                     BarOptions tmpOpt = OceManaBar.pMapConfig.get(sender.getName());
-                    int tmpX, tmpY;
-                    
-                    if(args[1].toLowerCase().equalsIgnoreCase("reset"))
-                    {
-                        tmpX = OceManaBar.posX;
-                        tmpY = OceManaBar.posY;
-                    }
-                    else
-                    {
-                        tmpX = Integer.parseInt(args[1].toLowerCase());
-                        tmpY = Integer.parseInt(args[2].toLowerCase());
-                    }
-                    
-                    tmpOpt.setXpos(tmpX);
-                    tmpOpt.setYpos(tmpY);
 
-                    if(OceManaBar.useTexture)
+                    if(args[0].toLowerCase().equals("off"))
                     {
-                        GenericGradient tmpTextureBar = OceManaBar.gradientbars.get(sender);
-                        util.SetGradientBar(tmpTextureBar, (SpoutPlayer)sender);
+                        tmpOpt.setEnabled(false);
+                    }
+                    if(args[0].toLowerCase().equals("on"))
+                    {
+                        tmpOpt.setEnabled(true);
+                    }
+
+                    if(args[0].toLowerCase().equals("position"))
+                    {
+                        int tmpX, tmpY;
+                        if(args[1].toLowerCase().equals("reset"))
+                        {
+                            tmpX = OceManaBar.posX;
+                            tmpY = OceManaBar.posY;
+                        }
+                        else
+                        {
+                            tmpX = Integer.parseInt(args[1].toLowerCase());
+                            tmpY = Integer.parseInt(args[2].toLowerCase());
+                        }
+                        tmpOpt.setXpos(tmpX);
+                        tmpOpt.setYpos(tmpY);
+                    }
+                    
+                    if(args[0].toLowerCase().equals("size"))
+                    {
+                        int tmpWidth, tmpHeight;
+                        if(args[1].toLowerCase().equalsIgnoreCase("reset"))
+                        {
+                            tmpWidth = OceManaBar.width;
+                            tmpHeight = OceManaBar.height;
+                        }
+                        else
+                        {
+                            tmpWidth = Integer.parseInt(args[1].toLowerCase());
+                            tmpHeight = Integer.parseInt(args[2].toLowerCase());
+                        }
+
+                        if(tmpWidth < 8)
+                            tmpWidth = 8;
+                        if(tmpHeight < 4)
+                            tmpHeight = 4;
                         
-                        GenericGradient tmpBg = OceManaBar.backgrounds.get(sender);
-                        util.SetBackgroundBar(tmpBg, (SpoutPlayer)sender);
-                    }
-                    if(OceManaBar.useAscii)
-                    {
-                        GenericLabel tmpAsciiBar = OceManaBar.asciibars.get(sender);
-                        util.setAsciiBar(tmpAsciiBar, (SpoutPlayer)sender);
-                    }
-                    if(OceManaBar.showNumeric)
-                    {
-                        GenericLabel tmpnumericmana = OceManaBar.numericmanas.get(sender);
-                        util.setNumericMana(tmpnumericmana, (SpoutPlayer)sender);
-                    }
-                    return true;
-                }
-            }
-            else if (args.length > 0 && args[0].toLowerCase().equals("size"))
-            {
-                boolean proceed = false;
-                if (sender instanceof Player) 
-                {
-                    if(!(sender.isOp() || sender.hasPermission("ocemanabar.user") || sender.hasPermission("ocemanabar.admin")))
-                        sender.sendMessage("You do not have permission to do this.");
-                    else
-                        proceed = true;
-                }
-                
-                if(proceed)
-                {
-                    BarOptions tmpOpt = OceManaBar.pMapConfig.get(sender.getName());
-                    int tmpWidth, tmpHeight;
-                    
-                    if(args[1].toLowerCase().equalsIgnoreCase("reset"))
-                    {
-                        tmpWidth = OceManaBar.width;
-                        tmpHeight = OceManaBar.height;
-                    }
-                    else
-                    {
-                        tmpWidth = Integer.parseInt(args[1].toLowerCase());
-                        tmpHeight = Integer.parseInt(args[2].toLowerCase());
+                        tmpOpt.setWidth(tmpWidth);
+                        tmpOpt.setHeight(tmpHeight);
                     }
                     
-                    tmpOpt.setWidth(tmpWidth);
-                    tmpOpt.setHeight(tmpHeight);
-
                     if(OceManaBar.useTexture)
                     {
                         GenericGradient tmpTextureBar = OceManaBar.gradientbars.get(sender);

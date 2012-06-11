@@ -62,7 +62,7 @@ public class OceManaBar extends JavaPlugin
     {
         try 
         {
-            utilities.savePlayerConfigs(pMapConfig, "db.dat");
+            utilities.savePlayerConfigs(pMapConfig, "/plugins/OceManaBar/db.dat");
         } catch (FileNotFoundException e) {e.printStackTrace();
         } catch (IOException e) {e.printStackTrace();}
         
@@ -74,6 +74,15 @@ public class OceManaBar extends JavaPlugin
     {
         plugin = this;
         PluginManager pm = getServer().getPluginManager();
+        try 
+        {
+            if(new File("/plugins/OceManaBar/db.dat").exists())
+            {
+                pMapConfig = utilities.loadPlayerConfigs("/plugins/OceManaBar/db.dat");
+            }
+        }
+        catch (IOException e) {e.printStackTrace();}
+        catch (ClassNotFoundException e) {e.printStackTrace();}
         
         CommandExecutor = new OceCommandHandler(this);
         getCommand("ocemanabar").setExecutor(CommandExecutor);
@@ -154,10 +163,10 @@ public class OceManaBar extends JavaPlugin
         segmentChar = getConfig().getString("segmentChar");
         size = getConfig().getInt("size");
 
-        if(manabarType == 2 && height < 8)
-            height = 8;
-        if(manabarType == 2 && width < 4)
-            width = 4;
+        if(manabarType == 2 && height < 4)
+            height = 4;
+        if(manabarType == 2 && width < 8)
+            width = 8;
 
         saveConfig();
     }

@@ -1,7 +1,11 @@
 package me.oceanor.OceManaBar;
 
-public class BarOptions 
+import java.io.Serializable;
+
+public class BarOptions implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
     private boolean enabled = true;
     private int x,y, height, width;
     
