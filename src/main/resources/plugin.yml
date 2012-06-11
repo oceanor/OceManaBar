@@ -1,6 +1,6 @@
 name: OceManaBar
 main: me.oceanor.OceManaBar.OceManaBar
-version: 2.5
+version: 2.7
 depend: [Spout,MagicSpells]
 commands:
     manabar:
