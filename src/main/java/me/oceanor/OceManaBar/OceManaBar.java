@@ -62,7 +62,7 @@ public class OceManaBar extends JavaPlugin
     {
         try 
         {
-            utilities.savePlayerConfigs(pMapConfig, "/plugins/OceManaBar/db.dat");
+            utilities.savePlayerConfigs(pMapConfig, "plugins/OceManaBar/db.dat");
         } catch (FileNotFoundException e) {e.printStackTrace();
         } catch (IOException e) {e.printStackTrace();}
         
@@ -76,9 +76,9 @@ public class OceManaBar extends JavaPlugin
         PluginManager pm = getServer().getPluginManager();
         try 
         {
-            if(new File("/plugins/OceManaBar/db.dat").exists())
+            if(new File("plugins/OceManaBar/db.dat").exists())
             {
-                pMapConfig = utilities.loadPlayerConfigs("/plugins/OceManaBar/db.dat");
+                pMapConfig = utilities.loadPlayerConfigs("plugins/OceManaBar/db.dat");
             }
         }
         catch (IOException e) {e.printStackTrace();}

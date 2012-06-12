@@ -161,6 +161,12 @@ public class OceCommandHandler implements CommandExecutor
 
                     if(args[0].toLowerCase().equals("position"))
                     {
+                        if(!args[1].isEmpty())
+                        {
+                            sender.sendMessage("Invalid parameters.");
+                            return false;
+                        }
+                            
                         int tmpX, tmpY;
                         if(args[1].toLowerCase().equals("reset"))
                         {
@@ -169,8 +175,16 @@ public class OceCommandHandler implements CommandExecutor
                         }
                         else
                         {
-                            tmpX = Integer.parseInt(args[1].toLowerCase());
-                            tmpY = Integer.parseInt(args[2].toLowerCase());
+                            try
+                            {
+                                tmpX = Integer.parseInt(args[1]);
+                                tmpY = Integer.parseInt(args[2]);
+                            }
+                            catch(NumberFormatException e)
+                            {
+                                sender.sendMessage("You have to use two numbers!.");
+                                return false;
+                            }
                         }
                         tmpOpt.setXpos(tmpX);
                         tmpOpt.setYpos(tmpY);
@@ -186,8 +200,16 @@ public class OceCommandHandler implements CommandExecutor
                         }
                         else
                         {
-                            tmpWidth = Integer.parseInt(args[1].toLowerCase());
-                            tmpHeight = Integer.parseInt(args[2].toLowerCase());
+                            try
+                            {
+                                tmpWidth = Integer.parseInt(args[1]);
+                                tmpHeight = Integer.parseInt(args[2]);
+                            }
+                            catch(NumberFormatException e)
+                            {
+                                sender.sendMessage("You have to use two numbers!.");
+                                return false;
+                            }
                         }
 
                         if(tmpWidth < 8)

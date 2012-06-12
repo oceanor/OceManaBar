@@ -21,9 +21,11 @@ public class OceListener implements Listener
     {
         if(OceManaBar.enabled && event.getPlayer().hasPermission("ocemanabar.show"))
         {
+            BarOptions opt = OceManaBar.pMapConfig.get(event.getPlayer().getName());
+            
             if(OceManaBar.useTexture)
             {
-                OceManaBar.gradientbars.get(event.getPlayer()).setWidth(event.getNewAmount() * (OceManaBar.width -3) / event.getMaxMana()).setDirty(true);
+                OceManaBar.gradientbars.get(event.getPlayer()).setWidth(event.getNewAmount() * (opt.getWidth() -3) / event.getMaxMana()).setDirty(true);
             }
             if(OceManaBar.useAscii)
             {
