@@ -21,35 +21,41 @@ public class OceListener implements Listener
     {
         if(OceManaBar.enabled && event.getPlayer().hasPermission("ocemanabar.show"))
         {
-            BarOptions opt = OceManaBar.pMapConfig.get(event.getPlayer().getName());
-            
-            if(OceManaBar.useTexture)
+            if(OceManaBar.SpoutPlayers.contains(event.getPlayer().getName()))
             {
-                OceManaBar.gradientbars.get(event.getPlayer()).setWidth(event.getNewAmount() * (opt.getWidth() -3) / event.getMaxMana()).setDirty(true);
-            }
-            if(OceManaBar.useAscii)
-            {
-                int segments = (int) (Math.floor(event.getNewAmount() * OceManaBar.size) / event.getMaxMana());
-                String textbar = "";
-                textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
+                BarOptions opt = OceManaBar.pMapConfig.get(event.getPlayer().getName());
                 
-                int i;
-                for (i=0 ; i<segments; i++)
-                    textbar += OceManaBar.segmentChar;
-                
-                textbar += ChatColor.BLACK;
-                
-                for (; i< OceManaBar.size; i++)
-                    textbar += OceManaBar.segmentChar;
-                
-                textbar += ChatColor.DARK_GRAY + "]";
-            
-                OceManaBar.asciibars.get(event.getPlayer()).setText(textbar).setDirty(true);
-            }
-            if(OceManaBar.showNumeric)
-            {
-                String numvalues = ChatColor.WHITE + "[" + event.getNewAmount() + "/" + event.getMaxMana() + "]";
-                OceManaBar.numericmanas.get(event.getPlayer()).setText(numvalues).setDirty(true);
+                if(opt.isEnabled())
+                {
+                    if(OceManaBar.useTexture)
+                    {
+                        OceManaBar.gradientbars.get(event.getPlayer()).setWidth(event.getNewAmount() * (opt.getWidth() -3) / event.getMaxMana()).setDirty(true);
+                    }
+                    if(OceManaBar.useAscii)
+                    {
+                        int segments = (int) (Math.floor(event.getNewAmount() * OceManaBar.size) / event.getMaxMana());
+                        String textbar = "";
+                        textbar += ChatColor.DARK_GRAY + "[" + ChatColor.BLUE;
+                        
+                        int i;
+                        for (i=0 ; i<segments; i++)
+                            textbar += OceManaBar.segmentChar;
+                        
+                        textbar += ChatColor.BLACK;
+                        
+                        for (; i< OceManaBar.size; i++)
+                            textbar += OceManaBar.segmentChar;
+                        
+                        textbar += ChatColor.DARK_GRAY + "]";
+                        
+                        OceManaBar.asciibars.get(event.getPlayer()).setText(textbar).setDirty(true);
+                    }
+                    if(OceManaBar.showNumeric)
+                    {
+                        String numvalues = ChatColor.WHITE + "[" + event.getNewAmount() + "/" + event.getMaxMana() + "]";
+                        OceManaBar.numericmanas.get(event.getPlayer()).setText(numvalues).setDirty(true);
+                    }
+                }
             }
         }
     }
