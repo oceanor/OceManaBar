@@ -161,9 +161,9 @@ public class OceCommandHandler implements CommandExecutor
 
                     if(args[0].toLowerCase().equals("position"))
                     {
-                        if(!args[1].isEmpty())
+                        if(!args[1].equals(null))
                         {
-                            sender.sendMessage("Invalid parameters.");
+                            sender.sendMessage("Missing parameters.");
                             return false;
                         }
                             
