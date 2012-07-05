@@ -161,7 +161,7 @@ public class OceCommandHandler implements CommandExecutor
 
                     if(args[0].toLowerCase().equals("position"))
                     {
-                        if(!args[1].equals(null))
+                        if(args[1].equals(null))
                         {
                             sender.sendMessage("Missing parameters.");
                             return false;
@@ -175,12 +175,18 @@ public class OceCommandHandler implements CommandExecutor
                         }
                         else
                         {
+                            if(args[2].equals(null))
+                            {
+                                sender.sendMessage("Second number missing!.");
+                                return false;
+                            }
+                            
                             try
                             {
                                 tmpX = Integer.parseInt(args[1]);
                                 tmpY = Integer.parseInt(args[2]);
                             }
-                            catch(NumberFormatException e)
+                            catch(Exception e)
                             {
                                 sender.sendMessage("You have to use two numbers!.");
                                 return false;
@@ -192,6 +198,12 @@ public class OceCommandHandler implements CommandExecutor
                     
                     if(args[0].toLowerCase().equals("size"))
                     {
+                        if(args[1].equals(null))
+                        {
+                            sender.sendMessage("Missing parameters.");
+                            return false;
+                        }
+                        
                         int tmpWidth, tmpHeight;
                         if(args[1].toLowerCase().equalsIgnoreCase("reset"))
                         {
@@ -200,6 +212,12 @@ public class OceCommandHandler implements CommandExecutor
                         }
                         else
                         {
+                            if(args[2].equals(null))
+                            {
+                                sender.sendMessage("Second number missing!.");
+                                return false;
+                            }
+                            
                             try
                             {
                                 tmpWidth = Integer.parseInt(args[1]);
