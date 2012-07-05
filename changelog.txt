@@ -1,0 +1,27 @@
+0.4
+- added gradient mana bar
+- changed configuration's folder name to plugin's name
+- bugfixes and safety checks
+
+0.3
+- added configuration to character segment, waiting to create a color-filled bar
+- added permission to show/hide mana bar
+
+0.2 -> http://dl.dropbox.com/u/25308568/OceManaBar_0.2.jar
+- added configuration nodes to height, width, number of segments, position X and Y
+- added configurable "maxmana" value, set it equal to "maxmana" of magicspells, is a workaround for now because i can't access that value from the extern
+- added configuration "shownumeric" to show/hide numeric values near the mana bar [mana/maxmana]
+
+0.1 -> http://dl.dropbox.com/u/25308568/OceManaBar_0.1.jar
+- First release, many things to do!
+
+Planned:
+DONE: configurable X and Y from the screen.
+DONE: configurable height - width
+DONE: configurable size
+DONE: implement permissions
+- use values from magicspell config
+- configurable colors for full/empty bar and delimiters
+DONE change the bar type to color-filled instead of text (it's a bit advanced I think, but I'll try)
+DONE: - optional [current value / total value] near mana bar (now is always displayed)
+- use magicspell events to update mana value instead of player move (if you stand still, mana doesn't update). this will use A LOT of less CPU.
